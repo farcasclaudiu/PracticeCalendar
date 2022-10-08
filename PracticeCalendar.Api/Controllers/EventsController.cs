@@ -13,7 +13,7 @@ namespace PrcaticeCalendar.Controllers
     {
         private readonly IRepository<PracticeEvent> eventsRepo;
         private readonly IMapper mapper;
-        private readonly ILogger<EventsController> _logger;
+        private readonly ILogger<EventsController> logger;
 
         public EventsController(IRepository<PracticeEvent> eventsRepo, 
             IMapper mapper,
@@ -21,12 +21,13 @@ namespace PrcaticeCalendar.Controllers
         {
             this.eventsRepo = eventsRepo;
             this.mapper = mapper;
-            _logger = logger;
+            this.logger = logger;
         }
 
         [HttpGet(Name = "GetAll")]
         public async Task<ActionResult<List<EventModel>>> Get()
         {
+
             var spec = new PracticeEventsWithAttendees();
             var repoList = await eventsRepo.ListAsync(spec);
             var evList = repoList.Select(x=> {
@@ -69,6 +70,10 @@ namespace PrcaticeCalendar.Controllers
         public async Task<IActionResult> DeleteEvent(int practiceEventId)
         {
             var org = await eventsRepo.GetByIdAsync(practiceEventId);
+            if (org == null)
+            {
+                return NotFound();
+            }
             await eventsRepo.DeleteAsync(org);
             await eventsRepo.SaveChangesAsync();
             return Ok();
@@ -79,7 +84,7 @@ namespace PrcaticeCalendar.Controllers
         public async Task<IActionResult> AttendeeAcceptEvent(int eventId, int attendeeId)
         {
             var spec = new PracticeEventByIdWithAttendees(eventId);
-            var practiceEvent = await eventsRepo.GetBySpecAsync(spec);
+            var practiceEvent = await eventsRepo.FirstOrDefaultAsync(spec);
             if (practiceEvent == null)
             {
                 return NotFound();
@@ -94,7 +99,7 @@ namespace PrcaticeCalendar.Controllers
         public async Task<IActionResult> AttendeeDeclineEvent(int eventId, int attendeeId)
         {
             var spec = new PracticeEventByIdWithAttendees(eventId);
-            var practiceEvent = await eventsRepo.GetBySpecAsync(spec);
+            var practiceEvent = await eventsRepo.FirstOrDefaultAsync(spec);
             if (practiceEvent == null)
             {
                 return NotFound();
