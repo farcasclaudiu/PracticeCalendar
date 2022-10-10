@@ -1,5 +1,6 @@
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Hosting;
+using PracticeCalendar.Application;
 using PracticeCalendar.Infrastructure;
 using PracticeCalendar.Infrastructure.Persistence;
 using System;
@@ -16,14 +17,16 @@ namespace PracticeCalendar
 
             builder.Services.AddProblemDetails();
 
-            builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //inject application
+            builder.Services.AddApplicationServices();
             //inject infrastructure
-            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+
 
             var app = builder.Build();
 

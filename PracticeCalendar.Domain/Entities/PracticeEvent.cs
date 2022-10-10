@@ -22,8 +22,7 @@ namespace PracticeCalendar.Domain.Entities
         public string Title { get; private set; } = string.Empty;
         public string Description{ get; private set; } = string.Empty;
 
-        private List<Attendee> attendees = new List<Attendee>();
-        public IEnumerable<Attendee> Attendees => attendees.AsReadOnly();
+        public IList<Attendee> Attendees { get; private set; } = new List<Attendee>();
 
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
@@ -32,7 +31,7 @@ namespace PracticeCalendar.Domain.Entities
         {
             Guard.Against.Null(attendee, nameof(attendee));
             attendee.AssignToEvent(this.Id);
-            attendees.Add(attendee);
+            Attendees.Add(attendee);
 
             var attendeeAddedEvent = new AttendeeAddedEvent(this, attendee);
             base.RegisterDomainEvent(attendeeAddedEvent);
@@ -42,6 +41,9 @@ namespace PracticeCalendar.Domain.Entities
         {
             this.Title = title;
             this.Description = description;
+
+            var titleDescUpdatedEvent = new EventUpdateTitleAndDescriptionEvent(this);
+            base.RegisterDomainEvent(titleDescUpdatedEvent);
         }
 
         public void AttendeeAcceptEvent(int attendeeId)
@@ -50,6 +52,9 @@ namespace PracticeCalendar.Domain.Entities
             if (attendee == null)
                 throw new InvalidAttendeeException(attendeeId);
             attendee.SetIsAttending(true);
+
+            var attendeeAcceptedEvent = new AttendeeAcceptedEvent(this, attendee);
+            base.RegisterDomainEvent(attendeeAcceptedEvent);
         }
 
         public void AttendeeDeclineEvent(int attendeeId)
@@ -58,6 +63,9 @@ namespace PracticeCalendar.Domain.Entities
             if (attendee == null)
                 throw new InvalidAttendeeException(attendeeId);
             attendee.SetIsAttending(false);
+
+            var attendeeDeclinedEvent = new AttendeeDeclinedEvent(this, attendee);
+            base.RegisterDomainEvent(attendeeDeclinedEvent);
         }
     }
 }

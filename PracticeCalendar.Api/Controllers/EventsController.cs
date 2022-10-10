@@ -1,106 +1,61 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PracticeCalendar.API.Model;
-using PracticeCalendar.Domain.Common.Interfaces;
-using PracticeCalendar.Domain.Entities;
-using PracticeCalendar.Domain.Entities.Specifications;
+using PracticeCalendar.API.Controllers;
+using PracticeCalendar.Application.PracticeEvents.Commands;
+using PracticeCalendar.Application.PracticeEvents.Queries;
+using PracticeCalendar.Application.PracticeEvents.Queries.GetPracticeEvents;
 
 namespace PrcaticeCalendar.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class EventsController : ControllerBase
+    public class EventsController : ApiControllerBase
     {
-        private readonly IRepository<PracticeEvent> eventsRepo;
-        private readonly IMapper mapper;
-        private readonly ILogger<EventsController> _logger;
+        private readonly ILogger<EventsController> logger;
 
-        public EventsController(IRepository<PracticeEvent> eventsRepo, 
-            IMapper mapper,
-            ILogger<EventsController> logger)
+        public EventsController(ILogger<EventsController> logger)
         {
-            this.eventsRepo = eventsRepo;
-            this.mapper = mapper;
-            _logger = logger;
+            this.logger = logger;
         }
 
         [HttpGet(Name = "GetAll")]
-        public async Task<ActionResult<List<EventModel>>> Get()
+        public async Task<ActionResult<List<PracticeEventDto>>> Get()
         {
-            var spec = new PracticeEventsWithAttendees();
-            var repoList = await eventsRepo.ListAsync(spec);
-            var evList = repoList.Select(x=> {
-                var model = mapper.Map<EventModel>(x);
-                model.Attendees = x.Attendees.Select(m=>mapper.Map<AttendeeModel>(m)).ToArray();
-                return model;
-            })
-            .ToList();
-            return evList;
+            return await Mediator.Send(new GetPracticeEventsQuery());
         }
 
         [HttpPost(Name = "Create practice event")]
-        public async Task<IActionResult> CreateEvent(EventModel eventModel)
+        public async Task<ActionResult<PracticeEventDto>> CreateEvent(PracticeEventDto eventModel)
         {
-            var practiceEvent = new PracticeEvent(eventModel.Title, eventModel.Description);
-            foreach (var att in eventModel.Attendees)
-            {
-                practiceEvent.AddAttendee(new Attendee(att.Name, att.EmailAddress));
-            }            
-            var result = await eventsRepo.AddAsync(practiceEvent);
-            await eventsRepo.SaveChangesAsync();
-            return Ok(mapper.Map<EventModel>(result));
+            return await Mediator.Send(new CreatePracticeEventCommand(eventModel));
         }
 
         [HttpPut(Name = "Update practice event")]
-        public async Task<IActionResult> UpdateEvent(EventModel eventModel)
+        public async Task<ActionResult<PracticeEventDto>> UpdateEvent(PracticeEventDto eventModel)
         {
-            var practiceEvent = await eventsRepo.GetByIdAsync(eventModel.Id);
-            if(practiceEvent == null)
-            {
-                return NotFound();
-            }
-            practiceEvent.UpdateTitleAndDescription(eventModel.Title, eventModel.Description);
-            await eventsRepo.UpdateAsync(practiceEvent);
-            await eventsRepo.SaveChangesAsync();
-            return Ok(mapper.Map<EventModel>(practiceEvent));
+            return await Mediator.Send(new UpdatePracticeEventCommand(eventModel));
         }
 
         [HttpDelete(Name = "Delete practice event")]
-        public async Task<IActionResult> DeleteEvent(int practiceEventId)
+        public async Task<ActionResult> DeleteEvent(int practiceEventId)
         {
-            var org = await eventsRepo.GetByIdAsync(practiceEventId);
-            await eventsRepo.DeleteAsync(org);
-            await eventsRepo.SaveChangesAsync();
+            await Mediator.Send(new DeletePracticeEventCommand(practiceEventId));
+
             return Ok();
         }
 
         [HttpPost]
         [Route("accept/{eventId}/{attendeeId}")]
-        public async Task<IActionResult> AttendeeAcceptEvent(int eventId, int attendeeId)
+        public async Task<ActionResult> AttendeeAcceptEvent(int eventId, int attendeeId)
         {
-            var spec = new PracticeEventByIdWithAttendees(eventId);
-            var practiceEvent = await eventsRepo.GetBySpecAsync(spec);
-            if (practiceEvent == null)
-            {
-                return NotFound();
-            }
-            practiceEvent.AttendeeAcceptEvent(attendeeId);
-            await eventsRepo.SaveChangesAsync();
+            await Mediator.Send(new AttendeeAcceptEventCommand(eventId, attendeeId));
+
             return Ok();
         }
 
         [HttpPost]
         [Route("decline/{eventId}/{attendeeId}")]
-        public async Task<IActionResult> AttendeeDeclineEvent(int eventId, int attendeeId)
+        public async Task<ActionResult> AttendeeDeclineEvent(int eventId, int attendeeId)
         {
-            var spec = new PracticeEventByIdWithAttendees(eventId);
-            var practiceEvent = await eventsRepo.GetBySpecAsync(spec);
-            if (practiceEvent == null)
-            {
-                return NotFound();
-            }
-            practiceEvent.AttendeeDeclineEvent(attendeeId);
-            await eventsRepo.SaveChangesAsync();
+            await Mediator.Send(new AttendeeDeclineEventCommand(eventId, attendeeId));
+
             return Ok();
         }
     }

@@ -5,18 +5,20 @@ using PracticeCalendar.Domain.Common.Interfaces;
 using PracticeCalendar.Domain.Interfaces;
 using PracticeCalendar.Infrastructure.Notification;
 using PracticeCalendar.Infrastructure.Persistence;
-using System;
+using PracticeCalendar.Infrastructure.Services;
 
 namespace PracticeCalendar.Infrastructure
 {
-    public static class InfrastructureDI
+    public static class ConfigureServices
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, 
+            IConfigurationRoot configuration)
         {
             string connectionString = configuration.GetConnectionString("SqliteConnection");
 
             services.AddDbContext(connectionString);
             services.AddTransient<IEmailSender, FileEmailSender>();
+            services.AddTransient<IDomainEventService, DomainEventService>();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 

@@ -1,15 +1,14 @@
 using FluentAssertions;
 using PracticeCalendar.Domain.Entities;
 
-namespace PracticeCalendar.UnitTests
+namespace PracticeCalendar.UnitTests.Domain
 {
     public class PracticeEventTest
     {
-        string _eventTitle = "Event1";
-        string _eventDescription = "Description";
-
-        string _attendeeName = "Claudiu Farcas";
-        string _atendeeEmail = "claudiu.farcas@testingbee.com";
+        readonly string _eventTitle = "Event1";
+        readonly string _eventDescription = "Description";
+        readonly string _attendeeName = "Claudiu Farcas";
+        readonly string _atendeeEmail = "claudiu.farcas@testingbee.com";
 
         [Fact]
         public void InitializeProperties()
@@ -23,22 +22,26 @@ namespace PracticeCalendar.UnitTests
         [Fact]
         public void InitializeWithNullShouldThrowException()
         {
-            Action act = () => {
-                var practiceEvent = new PracticeEvent(null, _eventDescription);
+            Action act = () =>
+            {
+                var practiceEvent = new PracticeEvent(null!, _eventDescription);
             };
             act.Should().Throw<ArgumentNullException>();
 
-            act = () => {
-                var practiceEvent = new PracticeEvent(_eventTitle, null);
+            act = () =>
+            {
+                var practiceEvent = new PracticeEvent(_eventTitle, null!);
             };
             act.Should().Throw<ArgumentNullException>();
 
-            act = () => {
+            act = () =>
+            {
                 var practiceEvent = new PracticeEvent(string.Empty, _eventDescription);
             };
             act.Should().Throw<ArgumentException>();
 
-            act = () => {
+            act = () =>
+            {
                 var practiceEvent = new PracticeEvent(_eventTitle, string.Empty);
             };
             act.Should().Throw<ArgumentException>();

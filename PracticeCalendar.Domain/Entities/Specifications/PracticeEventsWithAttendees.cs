@@ -6,7 +6,8 @@ namespace PracticeCalendar.Domain.Entities.Specifications
     {
         public PracticeEventsWithAttendees()
         {
-            Query.Include(x => x.Attendees);
+            Query.AsNoTracking()
+                .Include(x => x.Attendees);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Ardalis.GuardClauses;
 using PracticeCalendar.Domain.Common;
-using System.Diagnostics.Contracts;
 
 namespace PracticeCalendar.Domain.Entities
 {
