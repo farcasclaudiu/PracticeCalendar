@@ -2,11 +2,6 @@
 using Mapster;
 using PracticeCalendar.Application.PracticeEvents.Queries;
 using PracticeCalendar.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PracticeCalendar.UnitTests.Application.Mapping
 {
