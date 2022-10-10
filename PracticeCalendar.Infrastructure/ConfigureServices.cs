@@ -5,13 +5,13 @@ using PracticeCalendar.Domain.Common.Interfaces;
 using PracticeCalendar.Domain.Interfaces;
 using PracticeCalendar.Infrastructure.Notification;
 using PracticeCalendar.Infrastructure.Persistence;
-using System;
 
 namespace PracticeCalendar.Infrastructure
 {
-    public static class InfrastructureDI
+    public static class ConfigureServices
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationRoot configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, 
+            IConfigurationRoot configuration)
         {
             string connectionString = configuration.GetConnectionString("SqliteConnection");
 

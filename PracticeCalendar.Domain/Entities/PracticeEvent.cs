@@ -22,8 +22,7 @@ namespace PracticeCalendar.Domain.Entities
         public string Title { get; private set; } = string.Empty;
         public string Description{ get; private set; } = string.Empty;
 
-        private List<Attendee> attendees = new List<Attendee>();
-        public IEnumerable<Attendee> Attendees => attendees.AsReadOnly();
+        public IList<Attendee> Attendees { get; private set; } = new List<Attendee>();
 
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
@@ -32,7 +31,7 @@ namespace PracticeCalendar.Domain.Entities
         {
             Guard.Against.Null(attendee, nameof(attendee));
             attendee.AssignToEvent(this.Id);
-            attendees.Add(attendee);
+            Attendees.Add(attendee);
 
             var attendeeAddedEvent = new AttendeeAddedEvent(this, attendee);
             base.RegisterDomainEvent(attendeeAddedEvent);
