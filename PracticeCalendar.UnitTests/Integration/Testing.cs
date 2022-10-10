@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using PracticeCalendar.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Common.Interfaces;
+using Moq;
 
 namespace PracticeCalendar.UnitTests.Integration
 {
@@ -14,11 +16,19 @@ namespace PracticeCalendar.UnitTests.Integration
         private static IConfiguration _configuration = null!;
         private static IServiceScopeFactory _scopeFactory = null!;
 
+        public static Mock<IDomainEventService> domainEventServiceMock = null!;
+
         public static async Task RunBeforeAnyTests()
         {
-            _factory = new CustomWebApplicationFactory();
+            domainEventServiceMock = new Mock<IDomainEventService>();
+
+            _factory = new CustomWebApplicationFactory(cfg =>
+            {
+                cfg.AddSingleton(svc => domainEventServiceMock.Object);
+            });
+            
             _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
-            _configuration = _factory.Services.GetRequiredService<IConfiguration>();            
+            _configuration = _factory.Services.GetRequiredService<IConfiguration>();
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)

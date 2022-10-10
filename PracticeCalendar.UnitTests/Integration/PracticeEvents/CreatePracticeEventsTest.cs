@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
+using Moq;
 using PracticeCalendar.Application.PracticeEvents.Commands;
 using PracticeCalendar.Application.PracticeEvents.Queries;
-
+using PracticeCalendar.Domain.Common;
 using static PracticeCalendar.UnitTests.Integration.Testing;
 
 namespace PracticeCalendar.UnitTests.Integration.PracticeEvents
@@ -38,6 +39,9 @@ namespace PracticeCalendar.UnitTests.Integration.PracticeEvents
             result.Should().NotBeNull();
             result.Id.Should().NotBe(0);
             result.Attendees.Count.Should().Be(2);
+
+            //check domain events count
+            domainEventServiceMock.Verify(x=>x.Publish(It.IsAny<DomainEventBase>()), Times.Exactly(2));
         }
     }
 }

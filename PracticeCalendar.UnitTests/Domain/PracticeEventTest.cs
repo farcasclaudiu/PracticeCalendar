@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentAssertions.Common;
 using PracticeCalendar.Domain.Entities;
 
 namespace PracticeCalendar.UnitTests.Domain
@@ -13,7 +14,7 @@ namespace PracticeCalendar.UnitTests.Domain
         [Fact]
         public void InitializeProperties()
         {
-            var practiceEvent = new PracticeEvent(_eventTitle, _eventDescription);
+            var practiceEvent = new PracticeEvent(_eventTitle, _eventDescription, DateTime.Now, DateTime.Now);
             practiceEvent.Title.Should().Be(_eventTitle);
             practiceEvent.Description.Should().Be(_eventDescription);
             practiceEvent.Attendees.Should().HaveCount(0);
@@ -24,25 +25,25 @@ namespace PracticeCalendar.UnitTests.Domain
         {
             Action act = () =>
             {
-                var practiceEvent = new PracticeEvent(null!, _eventDescription);
+                var practiceEvent = new PracticeEvent(null!, _eventDescription, DateTime.Now, DateTime.Now);
             };
             act.Should().Throw<ArgumentNullException>();
 
             act = () =>
             {
-                var practiceEvent = new PracticeEvent(_eventTitle, null!);
+                var practiceEvent = new PracticeEvent(_eventTitle, null!, DateTime.Now, DateTime.Now);
             };
             act.Should().Throw<ArgumentNullException>();
 
             act = () =>
             {
-                var practiceEvent = new PracticeEvent(string.Empty, _eventDescription);
+                var practiceEvent = new PracticeEvent(string.Empty, _eventDescription, DateTime.Now, DateTime.Now);
             };
             act.Should().Throw<ArgumentException>();
 
             act = () =>
             {
-                var practiceEvent = new PracticeEvent(_eventTitle, string.Empty);
+                var practiceEvent = new PracticeEvent(_eventTitle, string.Empty, DateTime.Now, DateTime.Now);
             };
             act.Should().Throw<ArgumentException>();
         }
@@ -50,7 +51,7 @@ namespace PracticeCalendar.UnitTests.Domain
         [Fact]
         public void AddAttendeeToEvent()
         {
-            var practiceEvent = new PracticeEvent(_eventTitle, _eventDescription);
+            var practiceEvent = new PracticeEvent(_eventTitle, _eventDescription, DateTime.Now, DateTime.Now);
             var testAttendee = new Attendee(_attendeeName, _atendeeEmail);
             practiceEvent.AddAttendee(testAttendee);
             practiceEvent.Attendees.Should().HaveCount(1);

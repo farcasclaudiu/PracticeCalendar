@@ -18,7 +18,7 @@ namespace PracticeCalendar.Infrastructure
 
             services.AddDbContext(connectionString);
             services.AddTransient<IEmailSender, FileEmailSender>();
-            services.AddTransient<IDomainEventService, DomainEventService>();
+            services.AddSingleton<IDomainEventService, DomainEventService>();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 

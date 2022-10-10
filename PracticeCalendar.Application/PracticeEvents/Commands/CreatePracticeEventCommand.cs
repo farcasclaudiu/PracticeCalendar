@@ -28,7 +28,7 @@ namespace PracticeCalendar.Application.PracticeEvents.Commands
         public async Task<PracticeEventDto> Handle(CreatePracticeEventCommand request, CancellationToken cancellationToken)
         {
             var input = request.Event;
-            var practiceEvent = new PracticeEvent(input.Title, input.Description);
+            var practiceEvent = new PracticeEvent(input.Title, input.Description, input.StartTime, input.EndTime);
             foreach (var att in input.Attendees)
             {
                 practiceEvent.AddAttendee(new Attendee(att.Name, att.EmailAddress));

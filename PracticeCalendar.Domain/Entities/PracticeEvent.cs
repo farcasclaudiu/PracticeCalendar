@@ -11,12 +11,14 @@ namespace PracticeCalendar.Domain.Entities
     /// </summary>
     public class PracticeEvent : EntityBase, IAggregateRoot
     {
-        public PracticeEvent(string title, string description)
+        public PracticeEvent(string title, string description, DateTime startTime, DateTime endTime)
         {
             Guard.Against.NullOrEmpty(title, nameof(title));
             Guard.Against.NullOrEmpty(description, nameof(description));
             this.Title = title;
             this.Description = description;
+            this.StartTime = startTime;
+            this.EndTime = endTime;
         }
 
         public string Title { get; private set; } = string.Empty;
