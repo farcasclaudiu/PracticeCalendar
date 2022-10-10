@@ -41,6 +41,9 @@ namespace PracticeCalendar.Domain.Entities
         {
             this.Title = title;
             this.Description = description;
+
+            var titleDescUpdatedEvent = new EventUpdateTitleAndDescriptionEvent(this);
+            base.RegisterDomainEvent(titleDescUpdatedEvent);
         }
 
         public void AttendeeAcceptEvent(int attendeeId)
@@ -49,6 +52,9 @@ namespace PracticeCalendar.Domain.Entities
             if (attendee == null)
                 throw new InvalidAttendeeException(attendeeId);
             attendee.SetIsAttending(true);
+
+            var attendeeAcceptedEvent = new AttendeeAcceptedEvent(this, attendee);
+            base.RegisterDomainEvent(attendeeAcceptedEvent);
         }
 
         public void AttendeeDeclineEvent(int attendeeId)
@@ -57,6 +63,9 @@ namespace PracticeCalendar.Domain.Entities
             if (attendee == null)
                 throw new InvalidAttendeeException(attendeeId);
             attendee.SetIsAttending(false);
+
+            var attendeeDeclinedEvent = new AttendeeDeclinedEvent(this, attendee);
+            base.RegisterDomainEvent(attendeeDeclinedEvent);
         }
     }
 }

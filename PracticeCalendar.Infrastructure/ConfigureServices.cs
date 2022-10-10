@@ -5,6 +5,7 @@ using PracticeCalendar.Domain.Common.Interfaces;
 using PracticeCalendar.Domain.Interfaces;
 using PracticeCalendar.Infrastructure.Notification;
 using PracticeCalendar.Infrastructure.Persistence;
+using PracticeCalendar.Infrastructure.Services;
 
 namespace PracticeCalendar.Infrastructure
 {
@@ -17,6 +18,7 @@ namespace PracticeCalendar.Infrastructure
 
             services.AddDbContext(connectionString);
             services.AddTransient<IEmailSender, FileEmailSender>();
+            services.AddTransient<IDomainEventService, DomainEventService>();
 
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 

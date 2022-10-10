@@ -27,8 +27,6 @@ namespace PracticeCalendar
             //inject infrastructure
             builder.Services.AddInfrastructureServices(builder.Configuration);
 
-            //mapster
-            
 
             var app = builder.Build();
 
