@@ -56,7 +56,9 @@ namespace PracticeCalendar.Infrastructure.Persistence
             // Seed, if necessary
             if (!context.PracticeEvents.Any())
             {
-                context.PracticeEvents.Add(new PracticeEvent("Event 1", "Event 1 desc"));
+                context.PracticeEvents.Add(new PracticeEvent("Event 1", "Event 1 desc", 
+                    DateTime.Now.AddHours(-1),
+                    DateTime.Now.AddHours(1)));
 
                 await context.SaveChangesAsync();
             }

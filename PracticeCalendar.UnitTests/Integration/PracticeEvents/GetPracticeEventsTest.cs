@@ -26,7 +26,8 @@ namespace PracticeCalendar.UnitTests.Integration.PracticeEvents
         {
             await RunBeforeAnyTests();
 
-            await AddAsync(new PracticeEvent("Test Event", "Event description")
+            await AddAsync(new PracticeEvent("Test Event", "Event description", 
+                DateTime.Now.AddHours(-1), DateTime.Now.AddHours(1))
             {
                 Id = 1,
                 Attendees = { 
