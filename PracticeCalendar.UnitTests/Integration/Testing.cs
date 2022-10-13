@@ -26,9 +26,14 @@ namespace PracticeCalendar.UnitTests.Integration
             {
                 cfg.AddSingleton(svc => domainEventServiceMock.Object);
             });
-            
+
             _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
             _configuration = _factory.Services.GetRequiredService<IConfiguration>();
+        }
+
+        public static HttpClient GetHttpClient()
+        {
+            return _factory.CreateClient();
         }
 
         public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
