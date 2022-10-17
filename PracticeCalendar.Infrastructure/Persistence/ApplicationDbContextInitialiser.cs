@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PracticeCalendar.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 
 namespace PracticeCalendar.Infrastructure.Persistence
 {
@@ -14,7 +9,7 @@ namespace PracticeCalendar.Infrastructure.Persistence
         private readonly ILogger<ApplicationDbContextInitialiser> logger;
         private readonly ApplicationDbContext context;
 
-        public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, 
+        public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger,
             ApplicationDbContext context)
         {
             this.logger = logger;
@@ -27,6 +22,7 @@ namespace PracticeCalendar.Infrastructure.Persistence
             {
                 if (context.Database.IsSqlite())
                 {
+                    await context.Database.EnsureCreatedAsync();
                     await context.Database.MigrateAsync();
                 }
             }
@@ -56,7 +52,7 @@ namespace PracticeCalendar.Infrastructure.Persistence
             // Seed, if necessary
             if (!context.PracticeEvents.Any())
             {
-                context.PracticeEvents.Add(new PracticeEvent("Event 1", "Event 1 desc", 
+                context.PracticeEvents.Add(new PracticeEvent("Event 1", "Event 1 desc",
                     DateTime.Now.AddHours(-1),
                     DateTime.Now.AddHours(1)));
 

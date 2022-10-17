@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PracticeCalendar.Domain.Common;
 using PracticeCalendar.Domain.Common.Interfaces;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
+using PracticeCalendar.Domain.Entities.Product;
 using System.Reflection;
 
 namespace PracticeCalendar.Infrastructure.Persistence
@@ -12,6 +13,8 @@ namespace PracticeCalendar.Infrastructure.Persistence
 
         public DbSet<Attendee> Atendees => Set<Attendee>();
         public DbSet<PracticeEvent> PracticeEvents => Set<PracticeEvent>();
+
+        public DbSet<Product> Products => Set<Product>();
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventService domainEventService)
       : base(options)

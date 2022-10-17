@@ -1,6 +1,6 @@
 using System.Net;
 using FluentAssertions;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 using PracticeCalendar.UnitTests.Integration;
 using static PracticeCalendar.UnitTests.Integration.Testing;
 

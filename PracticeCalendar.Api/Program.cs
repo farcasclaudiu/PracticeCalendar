@@ -9,7 +9,7 @@ namespace PracticeCalendar
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -51,13 +51,11 @@ namespace PracticeCalendar
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                 try
                 {
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    //context.Database.Migrate();
-                    context.Database.EnsureCreated();
-                    //SeedData.Initialize(services);
+                    var initialiser = services.GetRequiredService<ApplicationDbContextInitialiser>();
+                    await initialiser.InitialiseAsync();
+                    await initialiser.SeedAsync();
                 }
                 catch (Exception ex)
                 {

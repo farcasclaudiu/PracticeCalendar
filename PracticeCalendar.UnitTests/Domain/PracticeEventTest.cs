@@ -1,6 +1,5 @@
 using FluentAssertions;
-using FluentAssertions.Common;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 
 namespace PracticeCalendar.UnitTests.Domain
 {

@@ -4,7 +4,7 @@ using PracticeCalendar.Domain.Common.Interfaces;
 using PracticeCalendar.Domain.Events;
 using PracticeCalendar.Domain.Exceptions;
 
-namespace PracticeCalendar.Domain.Entities
+namespace PracticeCalendar.Domain.Entities.PracticeEvent
 {
     /// <summary>
     /// Practice event aggregate
@@ -22,7 +22,7 @@ namespace PracticeCalendar.Domain.Entities
         }
 
         public string Title { get; private set; } = string.Empty;
-        public string Description{ get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
 
         public IList<Attendee> Attendees { get; private set; } = new List<Attendee>();
 

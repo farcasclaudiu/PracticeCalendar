@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using PracticeCalendar.Domain.Common.Interfaces;
-using PracticeCalendar.Domain.Entities;
-using PracticeCalendar.Domain.Entities.Specifications;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
+using PracticeCalendar.Domain.Entities.PracticeEvent.Specifications;
 using PracticeCalendar.Domain.Exceptions;
 
 namespace PracticeCalendar.Application.PracticeEvents.Commands
@@ -29,14 +29,14 @@ namespace PracticeCalendar.Application.PracticeEvents.Commands
 
         public async Task<Unit> Handle(AttendeeDeclineEventCommand request, CancellationToken cancellationToken)
         {
-            var spec = new PracticeEventByIdWithAttendees(request.EventId);
+            var spec = new PracticeEventByIdWithAttendeesSpecification(request.EventId);
             var practiceEvent = await eventsRepo.FirstOrDefaultAsync(spec, cancellationToken);
             if (practiceEvent == null)
             {
                 throw new PracticeEventNotFoundException();
             }
             practiceEvent.AttendeeDeclineEvent(request.AttendeeId);
-            
+
             return Unit.Value;
         }
     }

@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using PracticeCalendar.Application.PracticeEvents.Queries.GetPracticeEvents;
-using PracticeCalendar.Domain.Entities;
-
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 using static PracticeCalendar.UnitTests.Integration.Testing;
 
 namespace PracticeCalendar.UnitTests.Integration.PracticeEvents
@@ -26,11 +25,11 @@ namespace PracticeCalendar.UnitTests.Integration.PracticeEvents
         {
             await RunBeforeAnyTests();
 
-            await AddAsync(new PracticeEvent("Test Event", "Event description", 
+            await AddAsync(new PracticeEvent("Test Event", "Event description",
                 DateTime.Now.AddHours(-1), DateTime.Now.AddHours(1))
             {
                 Id = 1,
-                Attendees = { 
+                Attendees = {
                     new Attendee("Claudiu F", "claudiuf@busybee.com")
                     {
                       Id = 1

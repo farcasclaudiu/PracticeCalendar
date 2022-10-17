@@ -1,12 +1,12 @@
 ﻿using Ardalis.GuardClauses;
 using PracticeCalendar.Domain.Common;
 
-namespace PracticeCalendar.Domain.Entities
+namespace PracticeCalendar.Domain.Entities.PracticeEvent
 {
     /// <summary>
     /// Attendee to an event
     /// </summary>
-    public class Attendee: EntityBase
+    public class Attendee : EntityBase
     {
         public Attendee(string name, string emailAddress)
         {
@@ -20,12 +20,12 @@ namespace PracticeCalendar.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string EmailAddress { get; set; } = string.Empty;
         public bool IsAttending { get; private set; }
-        
+
         /// <summary>
         /// Set if the Attendee is attending
         /// </summary>
         /// <param name="isAttending"></param>
-        public void SetIsAttending (bool isAttending)
+        public void SetIsAttending(bool isAttending)
         {
             this.IsAttending = isAttending;
             //TODO - raise event

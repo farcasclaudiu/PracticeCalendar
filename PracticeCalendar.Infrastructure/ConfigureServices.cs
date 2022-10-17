@@ -11,12 +11,13 @@ namespace PracticeCalendar.Infrastructure
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, 
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
             IConfigurationRoot configuration)
         {
             string connectionString = configuration.GetConnectionString("SqliteConnection");
 
             services.AddDbContext(connectionString);
+
             services.AddTransient<IEmailSender, FileEmailSender>();
             services.AddSingleton<IDomainEventService, DomainEventService>();
 
@@ -25,8 +26,11 @@ namespace PracticeCalendar.Infrastructure
             return services;
         }
 
-        public static void AddDbContext(this IServiceCollection services, string connectionString) =>
+        public static void AddDbContext(this IServiceCollection services, string connectionString)
+        {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(connectionString));
+            services.AddScoped<ApplicationDbContextInitialiser>();
+        }
     }
 }

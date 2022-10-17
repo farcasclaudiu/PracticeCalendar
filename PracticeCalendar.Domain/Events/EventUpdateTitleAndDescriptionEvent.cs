@@ -1,5 +1,5 @@
 ﻿using PracticeCalendar.Domain.Common;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 
 namespace PracticeCalendar.Domain.Events
 {

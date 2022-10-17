@@ -3,8 +3,8 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using PracticeCalendar.Domain.Common.Interfaces;
-using PracticeCalendar.Domain.Entities;
-using PracticeCalendar.Domain.Entities.Specifications;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
+using PracticeCalendar.Domain.Entities.PracticeEvent.Specifications;
 
 namespace PracticeCalendar.Application.PracticeEvents.Queries.GetPracticeEvents
 {
@@ -29,7 +29,7 @@ namespace PracticeCalendar.Application.PracticeEvents.Queries.GetPracticeEvents
 
         public async Task<List<PracticeEventDto>> Handle(GetPracticeEventsQuery request, CancellationToken cancellationToken)
         {
-            var spec = new PracticeEventsWithAttendees();
+            var spec = new PracticeEventsWithAttendeesSpecification();
             var evList = await eventsRepo.ListAsync(spec, cancellationToken);
             var lst = evList.Adapt<List<PracticeEventDto>>(mapper.Config);
             return lst;

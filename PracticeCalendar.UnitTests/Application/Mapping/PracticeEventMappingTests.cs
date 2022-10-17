@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Mapster;
 using PracticeCalendar.Application.PracticeEvents.Queries;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 
 namespace PracticeCalendar.UnitTests.Application.Mapping
 {

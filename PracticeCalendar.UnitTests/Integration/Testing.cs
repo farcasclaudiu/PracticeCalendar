@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using PracticeCalendar.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using PracticeCalendar.Domain.Entities;
 using PracticeCalendar.Domain.Common.Interfaces;
 using Moq;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 
 namespace PracticeCalendar.UnitTests.Integration
 {

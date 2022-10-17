@@ -2,7 +2,7 @@
 using MediatR;
 using PracticeCalendar.Application.PracticeEvents.Queries;
 using PracticeCalendar.Domain.Common.Interfaces;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 using PracticeCalendar.Domain.Exceptions;
 
 namespace PracticeCalendar.Application.PracticeEvents.Commands

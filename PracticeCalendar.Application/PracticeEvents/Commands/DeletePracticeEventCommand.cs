@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using PracticeCalendar.Domain.Common.Interfaces;
-using PracticeCalendar.Domain.Entities;
+using PracticeCalendar.Domain.Entities.PracticeEvent;
 using PracticeCalendar.Domain.Exceptions;
 
 namespace PracticeCalendar.Application.PracticeEvents.Commands
@@ -32,7 +32,7 @@ namespace PracticeCalendar.Application.PracticeEvents.Commands
             }
             await eventsRepo.DeleteAsync(org, cancellationToken);
             await eventsRepo.SaveChangesAsync(cancellationToken);
-            
+
             return Unit.Value;
         }
     }
